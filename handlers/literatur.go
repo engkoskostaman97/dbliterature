@@ -110,12 +110,12 @@ func (h *handlerLiteratur) CreateLiteratur(w http.ResponseWriter, r *http.Reques
 	cld, _ := cloudinary.NewFromParams(CLOUD_NAME, API_KEY, API_SECRET)
 
 	// Upload file to Cloudinary ...
-	resp, err := cld.Upload.Upload(ctx, filepath, uploader.UploadParams{Folder: "dumbflix"})
+	resp, err := cld.Upload.Upload(ctx, filepath, uploader.UploadParams{Folder: "literature"})
 	if err != nil {
 		fmt.Println(err.Error())
 	}
 	literatur := models.Literatur{
-		Title:           request.Title,
+		Title: request.Title,
 		// UserID:          userId,
 		PublicationDate: request.PublicationDate,
 		Pages:           request.Pages,
