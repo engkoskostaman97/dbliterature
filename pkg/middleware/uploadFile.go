@@ -122,7 +122,7 @@ func UploadFile(next http.HandlerFunc) http.HandlerFunc {
 		// FormFile returns the first file for the given key `myFile`
 		// it also returns the FileHeader so we can get the Filename,
 		// the Header and the size of the file
-		file, _, err := r.FormFile("uploads")
+		file, _, err := r.FormFile("attache")
 
 		if err != nil {
 			fmt.Println(err)
@@ -197,11 +197,10 @@ func UploadFile(next http.HandlerFunc) http.HandlerFunc {
 		tempFile.Write(fileBytes)
 
 		data := tempFile.Name()
-		fmt.Println(data)    // uploads/image-89312783912.jpg
-		filename := data[8:] // split uploads/
+		// Delete 1 line this below code ...
 
-		// add filename to ctx
-		ctx := context.WithValue(r.Context(), "dataFile", filename)
+		// add data variable to ctx (on parameter 3) ...
+		ctx := context.WithValue(r.Context(), "dataFile", data)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
