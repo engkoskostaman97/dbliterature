@@ -10,8 +10,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"context"
 	"os"
+
+	"context"
 
 	"github.com/cloudinary/cloudinary-go/v2"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
@@ -91,7 +92,7 @@ func (h *handlerLiteratur) CreateLiteratur(w http.ResponseWriter, r *http.Reques
 		Pages:           r.FormValue("pages"),
 		ISBN:            r.FormValue("isbn"),
 		Author:          r.FormValue("author"),
-		// Attache:         r.FormValue("attache"),
+		Attache:         r.FormValue("attache"),
 	}
 
 	validation := validator.New()
