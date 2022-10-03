@@ -10,9 +10,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"os"
-
 	"context"
+	"os"
 
 	"github.com/cloudinary/cloudinary-go/v2"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
@@ -82,9 +81,8 @@ func (h *handlerLiteratur) CreateLiteratur(w http.ResponseWriter, r *http.Reques
 	// userId := int(userInfo["id"].(float64))
 
 	// Get dataFile from midleware and store to filename variable here ...
-	// get image filepath
-	dataContex := r.Context().Value("dataFile")
-	filepath := dataContex.(string)
+	dataContex := r.Context().Value("dataFile") // add this code
+	filepath := dataContex.(string)             // add this code
 
 	request := literaturdto.LiteraturRequest{
 		Title:           r.FormValue("title"),
