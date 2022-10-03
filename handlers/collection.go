@@ -15,7 +15,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// var path_file_collection = "https://literaturs.herokuapp.com/uploads/"
+var path_file_collection = "https://deployliterature.herokuapp.com/uploads/"
 
 type handlersCollection struct {
 	CollectionRepository repositories.CollectionRepository

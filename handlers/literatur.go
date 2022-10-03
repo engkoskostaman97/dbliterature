@@ -81,8 +81,9 @@ func (h *handlerLiteratur) CreateLiteratur(w http.ResponseWriter, r *http.Reques
 	// userId := int(userInfo["id"].(float64))
 
 	// Get dataFile from midleware and store to filename variable here ...
-	dataContex := r.Context().Value("dataFile") // add this code
-	filepath := dataContex.(string)             // add this code
+	// get image filepath
+	dataContex := r.Context().Value("dataFile")
+	filepath := dataContex.(string)
 
 	request := literaturdto.LiteraturRequest{
 		Title:           r.FormValue("title"),
