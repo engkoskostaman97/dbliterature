@@ -15,7 +15,7 @@ func UploadFile(next http.HandlerFunc) http.HandlerFunc {
 		// it also returns the FileHeader so we can get the Filename,
 		// the Header and the size of the file
 
-		file, _, err := r.FormFile("attache")
+		file, _, err := r.FormFile("image/*,.pdf")
 
 		if err != nil {
 			fmt.Println(err)
