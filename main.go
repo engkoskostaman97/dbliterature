@@ -13,8 +13,6 @@ import (
 	"github.com/joho/godotenv"
 )
 
-var port = os.Getenv("PORT")
-
 func main() {
 
 	// Init godotenv here ...
@@ -41,7 +39,7 @@ func main() {
 	var AllowedMethods = handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS", "PATCH", "DELETE"})
 	var AllowedOrigins = handlers.AllowedOrigins([]string{"*"})
 
-	var port = "5000"
+	var port = os.Getenv("PORT")
 	fmt.Println(":" + port)
 
 	http.ListenAndServe(":"+port, handlers.CORS(AllowedHeaders, AllowedMethods, AllowedOrigins)(r))
