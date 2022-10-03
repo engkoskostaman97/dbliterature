@@ -1,7 +1,9 @@
 package literaturdto
 
 type LiteraturRequest struct {
-	Title           string `json:"title" form:"title" gorm:"type: varchar(255)" validate:"required"`
+	Title string `json:"title" form:"title" gorm:"type: varchar(255)" validate:"required"`
+
+	UserID          int    `json:"user_id" form:"user_id" gorm:"type: varchar(255)" validate:"required"`
 	PublicationDate string `json:"publicationdate" form:"publicationdate" gorm:"type: varchar(255)" validate:"required"`
 	Pages           string `json:"pages" form:"pages" gorm:"type: varchar(255)" validate:"required"`
 	ISBN            string `json:"isbn" form:"isbn" gorm:"type: varchar(255)" validate:"required"`
