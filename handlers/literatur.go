@@ -92,7 +92,7 @@ func (h *handlerLiteratur) CreateLiteratur(w http.ResponseWriter, r *http.Reques
 		Pages:           r.FormValue("pages"),
 		ISBN:            r.FormValue("isbn"),
 		Author:          r.FormValue("author"),
-		Attache:         r.FormValue("attache"),
+		// Attache:         r.FormValue("attache"),
 	}
 
 	validation := validator.New()
