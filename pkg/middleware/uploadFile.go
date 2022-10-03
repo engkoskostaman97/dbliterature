@@ -15,7 +15,7 @@ func UploadFile(next http.HandlerFunc) http.HandlerFunc {
 		// it also returns the FileHeader so we can get the Filename,
 		// the Header and the size of the file
 
-		file, _, err := r.FormFile("attache-*.pdf")
+		file, _, err := r.FormFile("image/*,.pdf")
 
 		if err != nil {
 			fmt.Println(err)
@@ -39,7 +39,7 @@ func UploadFile(next http.HandlerFunc) http.HandlerFunc {
 
 		// Create a temporary file within our temp-images directory that follows
 		// a particular naming pattern
-		tempFile, err := ioutil.TempFile("uploads", "attache-*.pdf")
+		tempFile, err := ioutil.TempFile("uploads", "image/*,.pdf")
 		if err != nil {
 			fmt.Println(err)
 			fmt.Println("path upload error")
