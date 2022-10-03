@@ -154,4 +154,3 @@ func (h *handlersCollection) DeleteCollection(w http.ResponseWriter, r *http.Req
 	response := dto.SuccessResult{Code: http.StatusOK, Data: data}
 	json.NewEncoder(w).Encode(response)
 }
-
