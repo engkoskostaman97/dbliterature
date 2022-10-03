@@ -1,5 +1,3 @@
-
-
 package middleware
 
 import (
@@ -15,7 +13,7 @@ import (
 
 func UploadFile(next http.HandlerFunc) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		
+
 		file, _, err := r.FormFile("attache")
 
 		if err != nil {
@@ -91,11 +89,12 @@ func UploadFile(next http.HandlerFunc) http.HandlerFunc {
 		tempFile.Write(fileBytes)
 
 		data := tempFile.Name()
-		fmt.Println(data)    // uploads/image-89312783912.jpg
-		filename := data[8:] // split uploads/
 
-		// add filename to ctx
-		ctx := context.WithValue(r.Context(), "dataFile", filename)
+		// Delete 1 line this below code ...
+
+		// add data variable to ctx (on parameter 3) ...
+		ctx := context.WithValue(r.Context(), "dataFile", data)
 		next.ServeHTTP(w, r.WithContext(ctx))
+
 	})
 }

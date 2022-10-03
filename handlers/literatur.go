@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	literaturdto "literatur/dto/literatur"
 	dto "literatur/dto/result"
 	"literatur/models"
@@ -9,10 +10,12 @@ import (
 	"net/http"
 	"strconv"
 
+	"context"
 	"os"
 
+	"github.com/cloudinary/cloudinary-go/v2"
+	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
 	"github.com/go-playground/validator/v10"
-	"github.com/golang-jwt/jwt/v4"
 	"github.com/gorilla/mux"
 )
 
@@ -21,7 +24,7 @@ type handlerLiteratur struct {
 }
 
 // Create `path_file` Global variable here ...
-var PathFile = os.Getenv("PATH_FILE")
+// var PathFile = os.Getenv("PATH_FILE")
 
 func HandlerLiteratur(LiteraturRepository repositories.LiteraturRepository) *handlerLiteratur {
 	return &handlerLiteratur{LiteraturRepository}
@@ -39,9 +42,9 @@ func (h *handlerLiteratur) FindLiteraturs(w http.ResponseWriter, r *http.Request
 	}
 
 	// Create Embed Path File on Image property here ...
-	for i, p := range literaturs {
-		literaturs[i].Attache = os.Getenv("PATH_FILE") + p.Attache
-	}
+	// for i, p := range literaturs {
+	// 	literaturs[i].Attache = os.Getenv("PATH_FILE") + p.Attache
+	// }
 
 	w.WriteHeader(http.StatusOK)
 	response := dto.SuccessResult{Code: http.StatusOK, Data: literaturs}
@@ -63,7 +66,7 @@ func (h *handlerLiteratur) GetLiteratur(w http.ResponseWriter, r *http.Request) 
 	}
 
 	// Create Embed Path File on Image property here ...
-	literatur.Attache = os.Getenv("PATH_FILE") + literatur.Attache
+	// literatur.Attache = os.Getenv("PATH_FILE") + literatur.Attache
 
 	w.WriteHeader(http.StatusOK)
 	response := dto.SuccessResult{Code: http.StatusOK, Data: convertResponseLiteratur(literatur)}
@@ -74,12 +77,12 @@ func (h *handlerLiteratur) CreateLiteratur(w http.ResponseWriter, r *http.Reques
 	w.Header().Set("Content-Type", "application/json")
 
 	// get data user token
-	userInfo := r.Context().Value("userInfo").(jwt.MapClaims)
-	userId := int(userInfo["id"].(float64))
+	// userInfo := r.Context().Value("userInfo").(jwt.MapClaims)
+	// userId := int(userInfo["id"].(float64))
 
 	// Get dataFile from midleware and store to filename variable here ...
 	dataContex := r.Context().Value("dataFile") // add this code
-	filename := dataContex.(string)             // add this code
+	filepath := dataContex.(string)             // add this code
 
 	request := literaturdto.LiteraturRequest{
 		Title:           r.FormValue("title"),
@@ -87,7 +90,7 @@ func (h *handlerLiteratur) CreateLiteratur(w http.ResponseWriter, r *http.Reques
 		Pages:           r.FormValue("pages"),
 		ISBN:            r.FormValue("isbn"),
 		Author:          r.FormValue("author"),
-		Attache:         r.FormValue("attache"),
+		// Attache:         r.FormValue("attache"),
 	}
 
 	validation := validator.New()
@@ -98,15 +101,27 @@ func (h *handlerLiteratur) CreateLiteratur(w http.ResponseWriter, r *http.Reques
 		json.NewEncoder(w).Encode(response)
 		return
 	}
+	var ctx = context.Background()
+	var CLOUD_NAME = os.Getenv("CLOUD_NAME")
+	var API_KEY = os.Getenv("API_KEY")
+	var API_SECRET = os.Getenv("API_SECRET")
 
+	// Add your Cloudinary credentials ...
+	cld, _ := cloudinary.NewFromParams(CLOUD_NAME, API_KEY, API_SECRET)
+
+	// Upload file to Cloudinary ...
+	resp, err := cld.Upload.Upload(ctx, filepath, uploader.UploadParams{Folder: "dumbflix"})
+	if err != nil {
+		fmt.Println(err.Error())
+	}
 	literatur := models.Literatur{
 		Title:           request.Title,
-		UserID:          userId,
+		// UserID:          userId,
 		PublicationDate: request.PublicationDate,
 		Pages:           request.Pages,
 		ISBN:            request.ISBN,
 		Author:          request.Author,
-		Attache:         filename,
+		Attache:         resp.SecureURL, // Modify store file URL to database from resp.SecureURL ...,
 	}
 
 	literatur, err = h.LiteraturRepository.CreateLiteratur(literatur)
