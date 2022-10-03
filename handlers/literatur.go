@@ -118,7 +118,7 @@ func (h *handlerLiteratur) CreateLiteratur(w http.ResponseWriter, r *http.Reques
 	}
 	literatur := models.Literatur{
 		Title:           request.Title,
-		UserID:          request.UserID,
+		// UserID:          request.UserID,
 		PublicationDate: request.PublicationDate,
 		Pages:           request.Pages,
 		ISBN:            request.ISBN,
